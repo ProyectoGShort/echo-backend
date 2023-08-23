@@ -3,5 +3,8 @@ rootProject.name = 'echo-core'
 include ':echo'
 project(':echo').projectDir = new File('src/echo')
 
+include ':test'
+project(':test').projectDir = new File('src/test')
+
 include ':shared'
 project(':shared').projectDir = new File('src/shared')
