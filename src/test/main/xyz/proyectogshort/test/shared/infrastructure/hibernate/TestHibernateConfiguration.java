@@ -24,7 +24,7 @@ public class TestHibernateConfiguration {
     @Bean("testDataSource")
     public DataSource testDataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://localhost:5432/test");
+        config.setJdbcUrl("jdbc:postgresql://localhost:5433/test");
         config.setUsername("postgres");
         config.setPassword("postgres");
         config.setDriverClassName("org.postgresql.Driver");
