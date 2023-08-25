@@ -2,6 +2,7 @@ package xyz.proyectogshort.test.shared.infrastructure.hibernate;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -21,12 +22,19 @@ import java.util.HashMap;
 )
 public class TestHibernateConfiguration {
 
+    @Value("${test.database.name}") String name;
+    @Value("${test.database.host}") String host;
+    @Value("${test.database.port}") String port;
+    @Value("${test.database.username}") String username;
+    @Value("${test.database.password}") String password;
+    @Value("${test.database.ssl}") boolean ssl;
+
     @Bean("testDataSource")
     public DataSource testDataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://localhost:5433/test");
-        config.setUsername("postgres");
-        config.setPassword("postgres");
+        config.setJdbcUrl(String.format("jdbc:postgresql://%s:%s/%s?ssl=%b", host, port, name, ssl));
+        config.setUsername(username);
+        config.setPassword(password);
         config.setDriverClassName("org.postgresql.Driver");
         config.setMaximumPoolSize(10);
 
