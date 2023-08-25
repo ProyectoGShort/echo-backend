@@ -8,6 +8,6 @@ import xyz.proyectogshort.shared.domain.Service;
 @SpringBootApplication
 @ComponentScan(
         includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Service.class),
-        value = {"xyz.proyectogshort.apps.echo.backend", "xyz.proyectogshort.shared", "xyz.proyectogshort.echo"}
+        value = {"xyz.proyectogshort.apps.echo.backend", "xyz.proyectogshort.shared", "xyz.proyectogshort.echo", "xyz.proyectogshort.test"}
 )
 public class EchoBackend{}
