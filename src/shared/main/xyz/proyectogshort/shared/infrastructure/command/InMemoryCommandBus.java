@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.bus.command.*;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Service
 public final class InMemoryCommandBus implements CommandBus {
     private final CommandMiddlewareChain middlewareChain;
