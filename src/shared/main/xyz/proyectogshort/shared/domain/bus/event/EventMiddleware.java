@@ -1,5 +1,7 @@
 package xyz.proyectogshort.shared.domain.bus.event;
 
+import java.util.Map;
+
 public abstract class EventMiddleware {
     private EventMiddleware next;
 
@@ -9,13 +11,13 @@ public abstract class EventMiddleware {
         this.next = next;
     }
 
-    public abstract void process(DomainEvent event, Class<?> eventHandler);
+    public abstract void process(DomainEvent event, Class<?> eventHandler, Map<String, Object> context);
 
-    protected void next(DomainEvent event, Class<?> eventHandler) {
+    protected void next(DomainEvent event, Class<?> eventHandler, Map<String, Object> context) {
         if (next == null) {
             return;
         }
 
-        next.process(event, eventHandler);
+        next.process(event, eventHandler, context);
     }
 }

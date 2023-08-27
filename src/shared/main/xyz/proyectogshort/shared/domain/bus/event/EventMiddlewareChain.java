@@ -3,6 +3,7 @@ package xyz.proyectogshort.shared.domain.bus.event;
 import xyz.proyectogshort.shared.domain.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EventMiddlewareChain {
@@ -23,11 +24,11 @@ public class EventMiddlewareChain {
         }
     }
 
-    public void process(DomainEvent event, Class<?> eventHandler) {
+    public void process(DomainEvent event, Class<?> eventHandler, Map<String, Object> context) {
         if (head == null) {
             return;
         }
 
-        head.process(event, eventHandler);
+        head.process(event, eventHandler, context);
     }
 }

@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import xyz.proyectogshort.shared.domain.bus.event.DomainEvent;
 import xyz.proyectogshort.shared.domain.bus.event.EventMiddlewareChain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Aspect
 @Component
 public class InMemoryEventInterceptor {
@@ -22,8 +25,12 @@ public class InMemoryEventInterceptor {
 
         DomainEvent event = (DomainEvent) joinPoint.getArgs()[0];
         Class<?> eventHandler = joinPoint.getTarget().getClass();
-        this.eventMiddlewareChain.process(event, eventHandler);
 
-        return joinPoint.proceed();
+        Map<String, Object> context = new HashMap<>();
+        context.put("joinPoint", joinPoint);
+
+        this.eventMiddlewareChain.process(event, eventHandler, context);
+        return null;
     }
+
 }
