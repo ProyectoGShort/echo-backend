@@ -18,5 +18,6 @@ public final class OrderCreator {
     public void create(OrderId orderId) {
         System.out.println("Order received: " + orderId);
         orderEntityRepository.save(new OrderEntity(UUID.randomUUID().toString()));
+        throw new RuntimeException("test transaction");
     }
 }

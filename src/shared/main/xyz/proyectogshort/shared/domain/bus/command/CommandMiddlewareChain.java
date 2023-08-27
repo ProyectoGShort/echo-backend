@@ -14,11 +14,12 @@ public class CommandMiddlewareChain {
             return;
         }
 
+        CommandMiddleware previous = chain.get(0);
         head = chain.remove(0);
 
         for (CommandMiddleware nextInChain: chain) {
-            head.setNext(nextInChain);
-            head = nextInChain;
+            previous.setNext(nextInChain);
+            previous = nextInChain;
         }
     }
 
