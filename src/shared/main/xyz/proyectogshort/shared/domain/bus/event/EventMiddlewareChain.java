@@ -23,11 +23,11 @@ public class EventMiddlewareChain {
         }
     }
 
-    public void process(DomainEvent event) {
+    public void process(DomainEvent event, Class<?> eventHandler) {
         if (head == null) {
             return;
         }
 
-        head.process(event);
+        head.process(event, eventHandler);
     }
 }

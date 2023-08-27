@@ -1,18 +1,18 @@
 package xyz.proyectogshort.shared.infrastructure.event;
 
+import org.springframework.context.ApplicationEventPublisher;
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.bus.event.DomainEvent;
 import xyz.proyectogshort.shared.domain.bus.event.EventBus;
-import xyz.proyectogshort.shared.domain.bus.event.EventMiddlewareChain;
 
 import java.util.List;
 
 @Service
 public class InMemoryEventBus implements EventBus {
-    private final EventMiddlewareChain eventMiddlewareChain;
+    private final ApplicationEventPublisher publisher;
 
-    public InMemoryEventBus(EventMiddlewareChain eventMiddlewareChain) {
-        this.eventMiddlewareChain = eventMiddlewareChain;
+    public InMemoryEventBus(ApplicationEventPublisher publisher) {
+        this.publisher = publisher;
     }
 
     @Override
@@ -21,6 +21,6 @@ public class InMemoryEventBus implements EventBus {
     }
 
     private void publish(final DomainEvent event) {
-        eventMiddlewareChain.process(event);
+        publisher.publishEvent(event);
     }
 }

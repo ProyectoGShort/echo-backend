@@ -9,13 +9,13 @@ public abstract class EventMiddleware {
         this.next = next;
     }
 
-    public abstract void process(DomainEvent event);
+    public abstract void process(DomainEvent event, Class<?> eventHandler);
 
-    protected void next(DomainEvent event) {
+    protected void next(DomainEvent event, Class<?> eventHandler) {
         if (next == null) {
             return;
         }
 
-        next.process(event);
+        next.process(event, eventHandler);
     }
 }
