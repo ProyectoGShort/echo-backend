@@ -1,4 +1,4 @@
-package xyz.proyectogshort.shared.infrastructure.command;
+package xyz.proyectogshort.shared.infrastructure.command.inmemory;
 
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.bus.command.Command;

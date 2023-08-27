@@ -1,4 +1,4 @@
-package xyz.proyectogshort.shared.infrastructure.command.middleware;
+package xyz.proyectogshort.shared.infrastructure.command.common;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;

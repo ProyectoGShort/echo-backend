@@ -1,4 +1,4 @@
-package xyz.proyectogshort.shared.infrastructure.event;
+package xyz.proyectogshort.shared.infrastructure.event.inmemory;
 
 import org.springframework.context.ApplicationEventPublisher;
 import xyz.proyectogshort.shared.domain.Service;

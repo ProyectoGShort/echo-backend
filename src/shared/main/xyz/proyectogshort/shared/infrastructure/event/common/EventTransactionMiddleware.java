@@ -1,4 +1,4 @@
-package xyz.proyectogshort.shared.infrastructure.event.middleware;
+package xyz.proyectogshort.shared.infrastructure.event.common;
 
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.bus.event.DomainEvent;

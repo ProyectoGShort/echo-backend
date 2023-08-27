@@ -1,4 +1,4 @@
-package xyz.proyectogshort.shared.infrastructure.command;
+package xyz.proyectogshort.shared.infrastructure.command.common;
 
 import org.reflections.Reflections;
 import xyz.proyectogshort.shared.domain.Service;

@@ -1,4 +1,4 @@
-package xyz.proyectogshort.shared.infrastructure.event;
+package xyz.proyectogshort.shared.infrastructure.event.inmemory;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
