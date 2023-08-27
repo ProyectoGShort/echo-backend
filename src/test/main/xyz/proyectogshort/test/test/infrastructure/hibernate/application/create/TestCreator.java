@@ -16,5 +16,6 @@ public class TestCreator {
 
     public void create() {
         this.testEntityRepository.save(new TestEntity(UUID.randomUUID().toString()));
+        throw new RuntimeException("Test transaction");
     }
 }
