@@ -1,0 +1,4 @@
+dependencies {
+//    DO NOT DO THIS, THIS IS A TEST. FOR A REAL SCENARIO JUST PUT THE EVENT IN THE SHARED MODULE
+    implementation project(":echo")
+}
