@@ -27,12 +27,12 @@ public class TestHibernateConfiguration {
     @Value("${test.database.port}") String port;
     @Value("${test.database.username}") String username;
     @Value("${test.database.password}") String password;
-    @Value("${test.database.ssl}") boolean ssl;
+    @Value("${test.database.ssl}") String ssl;
 
     @Bean("testDataSource")
     public DataSource testDataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format("jdbc:postgresql://%s:%s/%s?ssl=%b", host, port, name, ssl));
+        config.setJdbcUrl(String.format("jdbc:postgresql://%s:%s/%s?ssl=%s", host, port, name, ssl));
         config.setUsername(username);
         config.setPassword(password);
         config.setDriverClassName("org.postgresql.Driver");

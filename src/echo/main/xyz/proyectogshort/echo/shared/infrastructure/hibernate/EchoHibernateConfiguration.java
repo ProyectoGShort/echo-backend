@@ -27,12 +27,12 @@ public class EchoHibernateConfiguration {
     @Value("${echo.database.port}") String port;
     @Value("${echo.database.username}") String username;
     @Value("${echo.database.password}") String password;
-    @Value("${echo.database.ssl}") boolean ssl;
+    @Value("${echo.database.ssl}") String ssl;
 
     @Bean("echoDataSource")
     public DataSource echoDataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format("jdbc:postgresql://%s:%s/%s?ssl=%b", host, port, name, ssl));
+        config.setJdbcUrl(String.format("jdbc:postgresql://%s:%s/%s?sslmode=%s", host, port, name, ssl));
         config.setUsername(username);
         config.setPassword(password);
         config.setDriverClassName("org.postgresql.Driver");
