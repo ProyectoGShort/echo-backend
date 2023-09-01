@@ -8,6 +8,7 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: echo
     ports:
       - "5432:5432"
 
@@ -16,6 +17,7 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test
     ports:
       - "5433:5432"
 
