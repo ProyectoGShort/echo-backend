@@ -1,4 +1,4 @@
-package xyz.proyectogshort.test.test.infrastructure.hibernate.application.create;
+package xyz.proyectogshort.test.test.application.create;
 
 import xyz.proyectogshort.echo.order.domain.OrderCreatedEvent;
 import xyz.proyectogshort.shared.domain.Service;
