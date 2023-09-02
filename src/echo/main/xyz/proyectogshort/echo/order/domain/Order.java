@@ -29,19 +29,22 @@ public class Order extends AggregateRoot {
 
     public static Order create(
             OrderId orderId,
-            String title,
-            OrderSource source,
             OrderSourceUrl sourceUrl,
-            long mediaCount,
-            String author
+            OrderInfo orderInfo
     ) {
-        Order order = new Order(orderId, title, source, sourceUrl, mediaCount, author);
+        Order order = new Order(
+                orderId,
+                orderInfo.title(),
+                orderInfo.source(),
+                sourceUrl,
+                orderInfo.mediaCount(),
+                orderInfo.author()
+        );
 
         order.record(new OrderCreatedEvent(orderId.value(), order.source.name(), sourceUrl.value()));
 
         return order;
     }
-
 
     public boolean isPlaylist(){
         return mediaCount > 1;

@@ -6,16 +6,20 @@ import xyz.proyectogshort.shared.domain.bus.event.EventBus;
 
 @Service
 public final class OrderCreator {
+    private final OrderInfoFetcherGateway orderInfoFetcherGateway;
     private final OrderRepository repository;
     private final EventBus bus;
 
-    public OrderCreator(OrderRepository repository, EventBus bus) {
+    public OrderCreator(OrderInfoFetcherGateway orderInfoFetcherGateway, OrderRepository repository, EventBus bus) {
+        this.orderInfoFetcherGateway = orderInfoFetcherGateway;
         this.repository = repository;
         this.bus = bus;
     }
 
     public void create(OrderId orderId, OrderSourceUrl orderSourceUrl) {
-        Order order = Order.create(orderId, "Test", OrderSource.YOUTUBE, orderSourceUrl, 0, "");
+        OrderInfo orderInfo = orderInfoFetcherGateway.fetch(orderSourceUrl);
+        Order order = Order.create(orderId, orderSourceUrl, orderInfo);
+
         repository.save(order);
         bus.publish(order.pullDomainEvents());
     }
