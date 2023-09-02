@@ -13,7 +13,10 @@ allprojects {
 		sourceCompatibility = '20'
 	}
 
-	dependencies {}
+	dependencies {
+		compileOnly 'org.projectlombok:lombok:1.18.28'
+		annotationProcessor 'org.projectlombok:lombok:1.18.28'
+	}
 }
 
 subprojects {
@@ -34,6 +37,7 @@ subprojects {
 		if (project.name != "shared") {
 			implementation project(":shared")
 
+			implementation 'org.modelmapper:modelmapper:3.1.1'
 			implementation 'org.liquibase:liquibase-core:4.23.1'
 			runtimeOnly 'org.postgresql:postgresql'
 		}
@@ -62,5 +66,6 @@ dependencies {
 	implementation project(":shared")
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }

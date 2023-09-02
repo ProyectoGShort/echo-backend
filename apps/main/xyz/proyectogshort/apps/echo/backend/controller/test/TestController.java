@@ -1,4 +1,4 @@
-package xyz.proyectogshort.apps.echo.backend.controller;
+package xyz.proyectogshort.apps.echo.backend.controller.test;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

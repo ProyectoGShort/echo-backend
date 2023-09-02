@@ -1,4 +1,4 @@
-package xyz.proyectogshort.apps.echo.backend.controller;
+package xyz.proyectogshort.apps.echo.backend.controller.health;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
