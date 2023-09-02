@@ -11,6 +11,7 @@ public class OrderEntity {
     @Id
     @Column(name = "id")
     private String idValue;
+    private String title;
     @Column(name = "source")
     private String source;
     @Column(name = "sourceUrl")

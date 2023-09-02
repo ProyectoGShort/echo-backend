@@ -11,6 +11,15 @@ public class Order extends AggregateRoot {
     private final long mediaCount;
     private final String author;
 
+    public Order(){
+        orderId = null;
+        title = null;
+        source = null;
+        sourceUrl = null;
+        mediaCount = 0;
+        author = null;
+    }
+
     public Order(
             OrderId orderId,
             String title,

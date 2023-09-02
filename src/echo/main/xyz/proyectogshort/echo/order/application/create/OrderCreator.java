@@ -20,6 +20,12 @@ public final class OrderCreator {
         OrderInfo orderInfo = orderInfoFetcherGateway.fetch(orderSourceUrl);
         Order order = Order.create(orderId, orderSourceUrl, orderInfo);
 
+        repository
+                .findById(orderId)
+                .ifPresent((existingOrder) -> {
+                    throw new OrderAlreadyExistsException(orderId);
+                });
+
         repository.save(order);
         bus.publish(order.pullDomainEvents());
     }

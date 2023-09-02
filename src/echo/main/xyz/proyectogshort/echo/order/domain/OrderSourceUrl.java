@@ -6,4 +6,8 @@ public class OrderSourceUrl extends StringValueObject {
     public OrderSourceUrl(String value) {
         super(value);
     }
+
+    private OrderSourceUrl() {
+        super("");
+    }
 }
