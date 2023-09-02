@@ -23,6 +23,7 @@ import java.util.HashMap;
 public class EchoHibernateConfiguration {
 
     @Value("${echo.database.name}") String name;
+    @Value("${echo.database.schema}") String schema;
     @Value("${echo.database.host}") String host;
     @Value("${echo.database.port}") String port;
     @Value("${echo.database.username}") String username;
@@ -33,6 +34,7 @@ public class EchoHibernateConfiguration {
     public DataSource echoDataSource() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(String.format("jdbc:postgresql://%s:%s/%s?sslmode=%s", host, port, name, ssl));
+        config.setSchema(schema);
         config.setUsername(username);
         config.setPassword(password);
         config.setDriverClassName("org.postgresql.Driver");
