@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.proyectogshort.shared.domain.bus.command.CommandBus;
-import xyz.proyectogshort.test.test.infrastructure.hibernate.application.create.CreateTestCommand;
+import xyz.proyectogshort.test.test.application.create.CreateTestCommand;
 
 @RestController
 @RequestMapping("tests")
