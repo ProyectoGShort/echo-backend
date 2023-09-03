@@ -11,6 +11,8 @@ RUN ./gradlew :bootJar
 #---------------------------------------------------------
 FROM amazoncorretto:20-alpine-jdk
 
+RUN apk add yt-dlp
+
 RUN adduser -S echo
 USER echo
 WORKDIR /home/echo
