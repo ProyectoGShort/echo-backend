@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.bus.query.*;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 @Service
 public final class InMemoryQueryBus implements QueryBus {
     private final QueryHandlersInformation information;

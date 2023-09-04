@@ -55,6 +55,30 @@ public class Order extends AggregateRoot {
         return order;
     }
 
+    public OrderId getOrderId() {
+        return orderId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public OrderSource getSource() {
+        return source;
+    }
+
+    public OrderSourceUrl getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public long getMediaCount() {
+        return mediaCount;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
     public boolean isPlaylist(){
         return mediaCount > 1;
     }

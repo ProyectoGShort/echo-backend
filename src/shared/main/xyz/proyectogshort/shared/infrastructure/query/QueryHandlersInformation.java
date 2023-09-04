@@ -10,12 +10,13 @@ import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Set;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Service
 public final class QueryHandlersInformation {
     HashMap<Class<? extends Query>, Class<? extends QueryHandler>> indexedQueryHandlers;
 
     public QueryHandlersInformation() {
-        Reflections                        reflections = new Reflections("tv.codely");
+        Reflections                        reflections = new Reflections("xyz.proyectogshort");
         Set<Class<? extends QueryHandler>> classes     = reflections.getSubTypesOf(QueryHandler.class);
 
         indexedQueryHandlers = formatHandlers(classes);
