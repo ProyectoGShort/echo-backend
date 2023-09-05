@@ -14,8 +14,9 @@ public class OrderEntity {
     private String title;
     @Column(name = "source")
     private String source;
-    @Column(name = "sourceUrl")
+    @Column(name = "source_url")
     private String sourceUrlValue;
+    @Column(name = "media_count")
     private long mediaCount;
     private String author;
 }
