@@ -24,12 +24,36 @@ public final class Media extends AggregateRoot {
         this.orderSourceUrl = orderSourceUrl;
     }
 
+    private Media(){
+        id = null;
+        mediaOrder = 0;
+        orderId = null;
+        orderSource = null;
+        orderSourceUrl = null;
+    }
+
     public static Media create(MediaId id, long mediaOrder, OrderId orderId, OrderSource source, OrderSourceUrl orderSourceUrl) {
         Media media = new Media(id, mediaOrder, MediaStatus.INITIALIZED, orderId, source, orderSourceUrl);
 
         media.record(new MediaCreatedEvent(media.id.value(), orderId.value()));
 
         return media;
+    }
+
+    public MediaId getId() {
+        return id;
+    }
+
+    public long getMediaOrder() {
+        return mediaOrder;
+    }
+
+    public OrderSource getOrderSource() {
+        return orderSource;
+    }
+
+    public MediaStatus getMediaStatus() {
+        return mediaStatus;
     }
 
     @Override

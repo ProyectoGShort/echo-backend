@@ -14,6 +14,8 @@ public final class MediaEntity {
 
     @Column(name = "media_order")
     private Long mediaOrder;
+    @Column(name = "media_status")
+    private String mediaStatus;
     @Column(name = "order_id")
     private String orderIdValue;
     @Column(name = "order_source")
