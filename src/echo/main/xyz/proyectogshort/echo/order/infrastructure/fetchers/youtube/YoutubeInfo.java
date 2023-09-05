@@ -1,4 +1,4 @@
-package xyz.proyectogshort.echo.shared.infrastructure.fetchers.youtube;
+package xyz.proyectogshort.echo.order.infrastructure.fetchers.youtube;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,7 +6,7 @@ import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class YoutubeInfo {
+public final class YoutubeInfo {
     private String title;
     private String uploader;
     @JsonProperty(value = "playlist_count", defaultValue = "0")

@@ -1,8 +1,12 @@
 package xyz.proyectogshort.echo.order.domain;
 
+import xyz.proyectogshort.echo.shared.domain.OrderCreatedEvent;
+import xyz.proyectogshort.echo.shared.domain.OrderId;
+import xyz.proyectogshort.echo.shared.domain.OrderSource;
+import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
 import xyz.proyectogshort.shared.domain.AggregateRoot;
 
-public class Order extends AggregateRoot {
+public final class Order extends AggregateRoot {
 
     private final OrderId orderId;
     private final String title;
@@ -11,7 +15,7 @@ public class Order extends AggregateRoot {
     private final long mediaCount;
     private final String author;
 
-    public Order(){
+    private Order(){
         orderId = null;
         title = null;
         source = null;
@@ -50,7 +54,12 @@ public class Order extends AggregateRoot {
                 orderInfo.author()
         );
 
-        order.record(new OrderCreatedEvent(orderId.value(), order.source.name(), sourceUrl.value()));
+        order.record(new OrderCreatedEvent(
+                orderId.value(),
+                order.source.name(),
+                sourceUrl.value(),
+                order.mediaCount)
+        );
 
         return order;
     }

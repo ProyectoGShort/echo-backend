@@ -1,4 +1,4 @@
-package xyz.proyectogshort.echo.order.domain;
+package xyz.proyectogshort.echo.shared.domain;
 
 import xyz.proyectogshort.shared.domain.Identifier;
 

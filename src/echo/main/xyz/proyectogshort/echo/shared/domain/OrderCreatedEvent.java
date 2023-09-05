@@ -1,24 +1,27 @@
-package xyz.proyectogshort.echo.order.domain;
+package xyz.proyectogshort.echo.shared.domain;
 
 import xyz.proyectogshort.shared.domain.bus.event.DomainEvent;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class OrderCreatedEvent extends DomainEvent {
+public final class OrderCreatedEvent extends DomainEvent {
 
     private final String orderSource;
     private final String orderSourceUrl;
+    private final long orderMediaCount;
 
     public OrderCreatedEvent(
         String aggregateId,
         String orderSource,
-        String orderSourceUrl
+        String orderSourceUrl,
+        long orderMediaCount
     ) {
         super(aggregateId);
 
         this.orderSource = orderSource;
         this.orderSourceUrl = orderSourceUrl;
+        this.orderMediaCount = orderMediaCount;
     }
 
     public OrderCreatedEvent(
@@ -26,12 +29,28 @@ public class OrderCreatedEvent extends DomainEvent {
             String eventId,
             String occurredOn,
             String orderSource,
-            String orderSourceUrl
+            String orderSourceUrl,
+            long orderMediaCount
+
     ) {
         super(aggregateId, eventId, occurredOn);
 
         this.orderSource = orderSource;
         this.orderSourceUrl = orderSourceUrl;
+        this.orderMediaCount = orderMediaCount;
+
+    }
+
+    public String getOrderSource() {
+        return orderSource;
+    }
+
+    public String getOrderSourceUrl() {
+        return orderSourceUrl;
+    }
+
+    public long getOrderMediaCount() {
+        return orderMediaCount;
     }
 
     @Override
@@ -44,6 +63,7 @@ public class OrderCreatedEvent extends DomainEvent {
        return new HashMap<>() {{
            put("orderSource", orderSource);
            put("orderSourceUrl", orderSourceUrl);
+           put("orderMediaCount", orderMediaCount);
        }};
     }
 
@@ -54,7 +74,8 @@ public class OrderCreatedEvent extends DomainEvent {
                 eventId,
                 occurredOn,
                 (String) body.get("orderSource"),
-                (String) body.get("orderSourceUrl")
+                (String) body.get("orderSourceUrl"),
+                (long) body.get("orderMediaCount")
         );
     }
 }

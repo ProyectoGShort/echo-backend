@@ -1,9 +1,9 @@
-package xyz.proyectogshort.echo.order.domain;
+package xyz.proyectogshort.echo.shared.domain;
 
 import xyz.proyectogshort.shared.domain.StringValueObject;
 import xyz.proyectogshort.shared.domain.Utils;
 
-public class OrderSourceUrl extends StringValueObject {
+public final class OrderSourceUrl extends StringValueObject {
     public OrderSourceUrl(String value) {
         super(getValidatedUrl(value));
     }

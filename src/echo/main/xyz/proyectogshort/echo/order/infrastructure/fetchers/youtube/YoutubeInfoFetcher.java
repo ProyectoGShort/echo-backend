@@ -1,7 +1,9 @@
-package xyz.proyectogshort.echo.shared.infrastructure.fetchers.youtube;
+package xyz.proyectogshort.echo.order.infrastructure.fetchers.youtube;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import xyz.proyectogshort.echo.order.domain.*;
+import xyz.proyectogshort.echo.shared.domain.OrderSource;
+import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
 import xyz.proyectogshort.shared.domain.Service;
 
 import java.io.BufferedReader;
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class YoutubeInfoFetcher implements OrderInfoFetcher {
+public final class YoutubeInfoFetcher implements OrderInfoFetcher {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override

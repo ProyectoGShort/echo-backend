@@ -1,11 +1,11 @@
 package xyz.proyectogshort.echo.order.application.find;
 
-import xyz.proyectogshort.echo.order.domain.OrderId;
+import xyz.proyectogshort.echo.shared.domain.OrderId;
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.bus.query.QueryHandler;
 
 @Service
-public class FindOrderQueryHandler implements QueryHandler<FindOrderQuery, OrderResponse> {
+public final class FindOrderQueryHandler implements QueryHandler<FindOrderQuery, OrderResponse> {
 
     private final OrderFinder orderFinder;
 

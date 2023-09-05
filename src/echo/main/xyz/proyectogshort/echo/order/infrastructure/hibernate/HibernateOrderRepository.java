@@ -3,14 +3,14 @@ package xyz.proyectogshort.echo.order.infrastructure.hibernate;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
 import xyz.proyectogshort.echo.order.domain.Order;
-import xyz.proyectogshort.echo.order.domain.OrderId;
+import xyz.proyectogshort.echo.shared.domain.OrderId;
 import xyz.proyectogshort.echo.order.domain.OrderRepository;
 import xyz.proyectogshort.shared.domain.Service;
 
 import java.util.Optional;
 
 @Service
-public class HibernateOrderRepository implements OrderRepository {
+public final class HibernateOrderRepository implements OrderRepository {
 
     private final ModelMapper modelMapper;
     private final OrderEntityRepository orderEntityRepository;

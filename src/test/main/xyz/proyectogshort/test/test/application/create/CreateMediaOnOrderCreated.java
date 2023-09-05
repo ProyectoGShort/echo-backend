@@ -1,6 +1,6 @@
 package xyz.proyectogshort.test.test.application.create;
 
-import xyz.proyectogshort.echo.order.domain.OrderCreatedEvent;
+import xyz.proyectogshort.echo.shared.domain.OrderCreatedEvent;
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.bus.event.EventListener;
 import xyz.proyectogshort.test.test.infrastructure.hibernate.TestEntity;

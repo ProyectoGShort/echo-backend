@@ -1,11 +1,12 @@
 package xyz.proyectogshort.echo.order.domain;
 
+import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
 import xyz.proyectogshort.shared.domain.Service;
 
 import java.util.List;
 
 @Service
-public class OrderInfoFetcherGateway {
+public final class OrderInfoFetcherGateway {
     private final List<OrderInfoFetcher> orderInfoFetcher;
 
     public OrderInfoFetcherGateway(List<OrderInfoFetcher> orderInfoFetcher) {

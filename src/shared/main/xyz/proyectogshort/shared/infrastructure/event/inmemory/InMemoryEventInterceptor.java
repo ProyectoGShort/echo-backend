@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Aspect
 @Component
-public class InMemoryEventInterceptor {
+public final class InMemoryEventInterceptor {
 
     private final EventMiddlewareChain eventMiddlewareChain;
 
@@ -21,7 +21,7 @@ public class InMemoryEventInterceptor {
     }
 
     @Around("@annotation(xyz.proyectogshort.shared.domain.bus.event.EventListener)")
-    public Object interceptEventListener(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object interceptEventListener(ProceedingJoinPoint joinPoint) {
 
         DomainEvent event = (DomainEvent) joinPoint.getArgs()[0];
         Class<?> eventHandler = joinPoint.getTarget().getClass();
