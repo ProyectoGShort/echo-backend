@@ -1,4 +1,4 @@
-package xyz.proyectogshort.echo.media.infrastructure;
+package xyz.proyectogshort.echo.media.infrastructure.hibernate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +12,10 @@ public final class MediaEntity {
     @Column(name = "id")
     private String idValue;
 
+    private String title;
+    private String author;
+    @Column(name = "media_source_url")
+    private String mediaSourceUrlValue;
     @Column(name = "media_order")
     private Long mediaOrder;
     @Column(name = "media_status")

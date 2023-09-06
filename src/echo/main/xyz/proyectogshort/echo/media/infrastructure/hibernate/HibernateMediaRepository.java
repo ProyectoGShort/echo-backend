@@ -1,13 +1,15 @@
-package xyz.proyectogshort.echo.media.infrastructure;
+package xyz.proyectogshort.echo.media.infrastructure.hibernate;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
 import xyz.proyectogshort.echo.media.domain.Media;
+import xyz.proyectogshort.echo.media.domain.MediaId;
 import xyz.proyectogshort.echo.media.domain.MediaRepository;
 import xyz.proyectogshort.echo.shared.domain.OrderId;
 import xyz.proyectogshort.shared.domain.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public final class HibernateMediaRepository implements MediaRepository {
@@ -22,7 +24,8 @@ public final class HibernateMediaRepository implements MediaRepository {
         modelMapper
                 .getConfiguration()
                 .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
-                .setFieldMatchingEnabled(true);
+                .setFieldMatchingEnabled(true)
+                .setAmbiguityIgnored(true);
     }
 
     @Override
@@ -38,5 +41,12 @@ public final class HibernateMediaRepository implements MediaRepository {
                 .stream()
                 .map(media -> modelMapper.map(media, Media.class))
                 .toList();
+    }
+
+    @Override
+    public Optional<Media> findById(MediaId mediaId) {
+        return mediaEntityRepository
+                .findById(mediaId.value())
+                .map(media -> modelMapper.map(media, Media.class));
     }
 }

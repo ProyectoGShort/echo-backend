@@ -11,6 +11,9 @@ CREATE TABLE orders (
 
 CREATE TABLE medias (
     id CHAR(36) PRIMARY KEY,
+    title VARCHAR(255) NULL,
+    author VARCHAR(255) NULL,
+    media_source_url TEXT NULL,
     media_order INTEGER NOT NULL,
     media_status VARCHAR(30) NOT NULL,
     order_id VARCHAR(36) NOT NULL,

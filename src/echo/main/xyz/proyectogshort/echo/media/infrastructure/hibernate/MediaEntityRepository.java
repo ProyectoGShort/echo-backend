@@ -1,4 +1,4 @@
-package xyz.proyectogshort.echo.media.infrastructure;
+package xyz.proyectogshort.echo.media.infrastructure.hibernate;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

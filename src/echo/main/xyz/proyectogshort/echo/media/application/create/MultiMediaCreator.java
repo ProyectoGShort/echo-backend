@@ -6,9 +6,12 @@ import xyz.proyectogshort.echo.media.domain.MediaRepository;
 import xyz.proyectogshort.echo.shared.domain.OrderId;
 import xyz.proyectogshort.echo.shared.domain.OrderSource;
 import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
+import xyz.proyectogshort.shared.domain.AggregateRoot;
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.UuidGenerator;
+import xyz.proyectogshort.shared.domain.bus.event.EventBus;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.LongStream;
 
@@ -17,10 +20,12 @@ public final class MultiMediaCreator {
 
     private final UuidGenerator uuidGenerator;
     private final MediaRepository mediaRepository;
+    private final EventBus eventBus;
 
-    public MultiMediaCreator(UuidGenerator uuidGenerator, MediaRepository mediaRepository) {
+    public MultiMediaCreator(UuidGenerator uuidGenerator, MediaRepository mediaRepository, EventBus eventBus) {
         this.uuidGenerator = uuidGenerator;
         this.mediaRepository = mediaRepository;
+        this.eventBus = eventBus;
     }
 
     public void createMultiple(OrderId orderId, OrderSource orderSource, OrderSourceUrl orderSourceUrl, long orderMediaCount) {
@@ -31,7 +36,14 @@ public final class MultiMediaCreator {
                 .toList();
 
         mediaList.forEach(mediaRepository::save);
-        mediaList.forEach(System.out::println);
+
+        var events = mediaList
+                .stream()
+                .map(AggregateRoot::pullDomainEvents)
+                .flatMap(Collection::stream)
+                .toList();
+
+        eventBus.publish(events);
     }
 
     private Media createMedia(long mediaOrder, OrderId orderId, OrderSource orderSource, OrderSourceUrl orderSourceUrl) {

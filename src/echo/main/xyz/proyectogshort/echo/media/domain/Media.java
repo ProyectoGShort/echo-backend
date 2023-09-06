@@ -9,14 +9,32 @@ public final class Media extends AggregateRoot {
 
     private final MediaId id;
     private final long mediaOrder;
+
+    private String title;
+    private String author;
+    private MediaSourceUrl mediaSourceUrl;
+
     private final OrderId orderId;
     private final OrderSource orderSource;
     private final OrderSourceUrl orderSourceUrl;
 
     private MediaStatus mediaStatus;
 
-    public Media(MediaId id, long mediaOrder, MediaStatus mediaStatus, OrderId orderId, OrderSource orderSource, OrderSourceUrl orderSourceUrl) {
+    public Media(
+            MediaId id,
+            long mediaOrder,
+            String title,
+            String author,
+            MediaSourceUrl mediaSourceUrl,
+            MediaStatus mediaStatus,
+            OrderId orderId,
+            OrderSource orderSource,
+            OrderSourceUrl orderSourceUrl
+    ) {
         this.id = id;
+        this.title = title;
+        this.author = author;
+        this.mediaSourceUrl = mediaSourceUrl;
         this.mediaOrder = mediaOrder;
         this.mediaStatus = mediaStatus;
         this.orderId = orderId;
@@ -33,7 +51,17 @@ public final class Media extends AggregateRoot {
     }
 
     public static Media create(MediaId id, long mediaOrder, OrderId orderId, OrderSource source, OrderSourceUrl orderSourceUrl) {
-        Media media = new Media(id, mediaOrder, MediaStatus.INITIALIZED, orderId, source, orderSourceUrl);
+        Media media = new Media(
+                id,
+                mediaOrder,
+                null,
+                null,
+                null,
+                MediaStatus.INITIALIZED,
+                orderId,
+                source,
+                orderSourceUrl
+        );
 
         media.record(new MediaCreatedEvent(media.id.value(), orderId.value()));
 
@@ -54,6 +82,28 @@ public final class Media extends AggregateRoot {
 
     public MediaStatus getMediaStatus() {
         return mediaStatus;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public MediaSourceUrl getMediaSourceUrl() {
+        return mediaSourceUrl;
+    }
+
+    public String getMediaSourceUrlValue() {
+        return mediaSourceUrl != null ? mediaSourceUrl.value() : null;
+    }
+
+    public void updateWithMediaInfo(MediaInfo mediaInfo) {
+        title = mediaInfo.title();
+        author = mediaInfo.author();
+        mediaSourceUrl = mediaInfo.mediaSourceUrl();
     }
 
     @Override
