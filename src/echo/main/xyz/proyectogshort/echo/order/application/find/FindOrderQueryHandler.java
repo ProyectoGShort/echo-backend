@@ -1,5 +1,6 @@
 package xyz.proyectogshort.echo.order.application.find;
 
+import xyz.proyectogshort.echo.shared.application.FindOrderQuery;
 import xyz.proyectogshort.echo.shared.domain.OrderId;
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.bus.query.QueryHandler;

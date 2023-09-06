@@ -1,4 +1,4 @@
-package xyz.proyectogshort.echo.order.application.find;
+package xyz.proyectogshort.echo.shared.application;
 
 import xyz.proyectogshort.shared.domain.bus.query.Query;
 
