@@ -2,10 +2,10 @@ package xyz.proyectogshort.echo.media.infrastructure.hibernate;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
-import xyz.proyectogshort.echo.media.domain.Media;
-import xyz.proyectogshort.echo.media.domain.MediaId;
-import xyz.proyectogshort.echo.media.domain.MediaRepository;
+import xyz.proyectogshort.echo.media.domain.*;
 import xyz.proyectogshort.echo.shared.domain.OrderId;
+import xyz.proyectogshort.echo.shared.domain.OrderSource;
+import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
 import xyz.proyectogshort.shared.domain.Service;
 
 import java.util.List;
@@ -31,6 +31,8 @@ public final class HibernateMediaRepository implements MediaRepository {
     @Override
     public void save(Media media) {
         MediaEntity mediaEntity = modelMapper.map(media, MediaEntity.class);
+        mediaEntity.setMediaSourceUrlValue(media.getMediaSourceUrlValue());
+
         mediaEntityRepository.save(mediaEntity);
     }
 
@@ -39,7 +41,7 @@ public final class HibernateMediaRepository implements MediaRepository {
         var result = mediaEntityRepository.findByOrderIdValue(orderId.value());
         return result
                 .stream()
-                .map(media -> modelMapper.map(media, Media.class))
+                .map(this::mapFromEntity)
                 .toList();
     }
 
@@ -47,6 +49,20 @@ public final class HibernateMediaRepository implements MediaRepository {
     public Optional<Media> findById(MediaId mediaId) {
         return mediaEntityRepository
                 .findById(mediaId.value())
-                .map(media -> modelMapper.map(media, Media.class));
+                .map(this::mapFromEntity);
+    }
+
+    private Media mapFromEntity(MediaEntity mediaEntity) {
+        return new Media(
+                new MediaId(mediaEntity.getIdValue()),
+                mediaEntity.getMediaOrder(),
+                mediaEntity.getTitle(),
+                mediaEntity.getAuthor(),
+                mediaEntity.getMediaSourceUrlValue() == null ? null : new MediaSourceUrl(mediaEntity.getMediaSourceUrlValue()),
+                MediaStatus.valueOf(mediaEntity.getMediaStatus()),
+                new OrderId(mediaEntity.getOrderIdValue()),
+                OrderSource.valueOf(mediaEntity.getOrderSource()),
+                new OrderSourceUrl(mediaEntity.getOrderSourceUrlValue())
+        );
     }
 }

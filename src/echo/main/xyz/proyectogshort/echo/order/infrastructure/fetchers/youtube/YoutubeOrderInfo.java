@@ -6,7 +6,7 @@ import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public final class YoutubeInfo {
+public final class YoutubeOrderInfo {
     private String title;
     private String uploader;
     @JsonProperty(value = "playlist_count", defaultValue = "0")

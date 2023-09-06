@@ -100,10 +100,23 @@ public final class Media extends AggregateRoot {
         return mediaSourceUrl != null ? mediaSourceUrl.value() : null;
     }
 
+    public OrderSourceUrl getOrderSourceUrl() {
+        return orderSourceUrl;
+    }
+
     public void updateWithMediaInfo(MediaInfo mediaInfo) {
         title = mediaInfo.title();
         author = mediaInfo.author();
         mediaSourceUrl = mediaInfo.mediaSourceUrl();
+    }
+
+
+    public boolean matchesSource(OrderSource orderSource) {
+        if (this.orderSource == null || orderSource == null) {
+            return false;
+        }
+
+        return this.orderSource.equals(orderSource);
     }
 
     @Override

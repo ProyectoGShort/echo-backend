@@ -13,7 +13,7 @@ public class Utils {
 
     public static boolean validateUrl(String url) {
         // Try to prevent shell injection
-        var excludedChars = List.of("-", "<", ">", "\\", ";", "|", "$");
+        var excludedChars = List.of("<", ">", "\\", ";", "|", "$");
 
         var urlContainsExcluded = excludedChars.stream().anyMatch(url::contains);
         if (urlContainsExcluded) {

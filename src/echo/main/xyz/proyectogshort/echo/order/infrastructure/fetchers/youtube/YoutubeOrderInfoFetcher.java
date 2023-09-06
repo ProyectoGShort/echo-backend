@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public final class YoutubeInfoFetcher implements OrderInfoFetcher {
+public final class YoutubeOrderInfoFetcher implements OrderInfoFetcher {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -25,7 +25,7 @@ public final class YoutubeInfoFetcher implements OrderInfoFetcher {
     @Override
     public OrderInfo fetch(OrderSourceUrl orderSourceUrl) {
 
-        YoutubeInfo youtubeInfo;
+        YoutubeOrderInfo youtubeInfo;
 
         try (BufferedReader inputStream = startDownload(orderSourceUrl)) {
 
@@ -33,7 +33,7 @@ public final class YoutubeInfoFetcher implements OrderInfoFetcher {
                     .lines()
                     .collect(Collectors.joining());
 
-            youtubeInfo = objectMapper.readValue(result, YoutubeInfo.class);
+            youtubeInfo = objectMapper.readValue(result, YoutubeOrderInfo.class);
 
         } catch (Exception e) {
             throw new OrderInfoFetchingException(e);
@@ -57,7 +57,7 @@ public final class YoutubeInfoFetcher implements OrderInfoFetcher {
         return new BufferedReader(new InputStreamReader(stream));
     }
 
-    private static OrderInfo getVideoOrder(YoutubeInfo youtubeInfo) {
+    private static OrderInfo getVideoOrder(YoutubeOrderInfo youtubeInfo) {
         return new OrderInfo(
                 youtubeInfo.getTitle(),
                 OrderSource.YOUTUBE,
@@ -66,7 +66,7 @@ public final class YoutubeInfoFetcher implements OrderInfoFetcher {
         );
     }
 
-    private static OrderInfo getPlaylistOrder(YoutubeInfo youtubeInfo) {
+    private static OrderInfo getPlaylistOrder(YoutubeOrderInfo youtubeInfo) {
         return new OrderInfo(
                 youtubeInfo.getPlaylistTitle(),
                 OrderSource.YOUTUBE,
