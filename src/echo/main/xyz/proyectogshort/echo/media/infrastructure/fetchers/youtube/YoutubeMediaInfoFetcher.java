@@ -2,7 +2,7 @@ package xyz.proyectogshort.echo.media.infrastructure.fetchers.youtube;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import xyz.proyectogshort.echo.media.domain.*;
-import xyz.proyectogshort.echo.shared.domain.OrderSource;
+import xyz.proyectogshort.echo.shared.domain.Source;
 import xyz.proyectogshort.shared.domain.Service;
 
 import java.io.BufferedReader;
@@ -18,7 +18,7 @@ public final class YoutubeMediaInfoFetcher implements MediaInfoFetcher {
 
     @Override
     public boolean isCompatible(Media media) {
-        return media.matchesSource(OrderSource.YOUTUBE);
+        return media.matchesSource(Source.YOUTUBE);
     }
 
     @Override
@@ -53,7 +53,7 @@ public final class YoutubeMediaInfoFetcher implements MediaInfoFetcher {
                 "-j",
                 "--no-warnings",
                 "-I",
-                String.valueOf(media.getMediaOrder())
+                String.valueOf(media.getPosition())
         );
 
         InputStream stream = new ProcessBuilder(command)

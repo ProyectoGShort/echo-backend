@@ -2,7 +2,7 @@ package xyz.proyectogshort.echo.media.application.create;
 
 import xyz.proyectogshort.echo.shared.domain.OrderCreatedEvent;
 import xyz.proyectogshort.echo.shared.domain.OrderId;
-import xyz.proyectogshort.echo.shared.domain.OrderSource;
+import xyz.proyectogshort.echo.shared.domain.Source;
 import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
 import xyz.proyectogshort.shared.domain.Service;
 import xyz.proyectogshort.shared.domain.bus.event.EventListener;
@@ -20,7 +20,7 @@ public class CreateMediaOnOrderCreated {
     public void on(OrderCreatedEvent event) {
         mediaCreator.createMultiple(
                 new OrderId(event.aggregateId()),
-                OrderSource.valueOf(event.getOrderSource()),
+                Source.valueOf(event.getOrderSource()),
                 new OrderSourceUrl(event.getOrderSourceUrl()),
                 event.getOrderMediaCount()
         );

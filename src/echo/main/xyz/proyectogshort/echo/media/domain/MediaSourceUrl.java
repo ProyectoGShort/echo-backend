@@ -17,10 +17,6 @@ public final class MediaSourceUrl extends StringValueObject {
         return value;
     }
 
-    private MediaSourceUrl() {
-        super("");
-    }
-
     public boolean matches(String pattern) {
         return value().matches(pattern);
     }

@@ -2,37 +2,28 @@ package xyz.proyectogshort.echo.order.domain;
 
 import xyz.proyectogshort.echo.shared.domain.OrderCreatedEvent;
 import xyz.proyectogshort.echo.shared.domain.OrderId;
-import xyz.proyectogshort.echo.shared.domain.OrderSource;
 import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
+import xyz.proyectogshort.echo.shared.domain.Source;
 import xyz.proyectogshort.shared.domain.AggregateRoot;
 
 public final class Order extends AggregateRoot {
 
-    private final OrderId orderId;
+    private final OrderId id;
     private final String title;
-    private final OrderSource source;
+    private final Source source;
     private final OrderSourceUrl sourceUrl;
     private final long mediaCount;
     private final String author;
 
-    private Order(){
-        orderId = null;
-        title = null;
-        source = null;
-        sourceUrl = null;
-        mediaCount = 0;
-        author = null;
-    }
-
     public Order(
-            OrderId orderId,
+            OrderId id,
             String title,
-            OrderSource source,
+            Source source,
             OrderSourceUrl sourceUrl,
             long mediaCount,
             String author
     ) {
-        this.orderId = orderId;
+        this.id = id;
         this.title = title;
         this.source = source;
         this.sourceUrl = sourceUrl;
@@ -41,12 +32,12 @@ public final class Order extends AggregateRoot {
     }
 
     public static Order create(
-            OrderId orderId,
+            OrderId id,
             OrderSourceUrl sourceUrl,
             OrderInfo orderInfo
     ) {
         Order order = new Order(
-                orderId,
+                id,
                 orderInfo.title(),
                 orderInfo.source(),
                 sourceUrl,
@@ -55,7 +46,7 @@ public final class Order extends AggregateRoot {
         );
 
         order.record(new OrderCreatedEvent(
-                orderId.value(),
+                id.value(),
                 order.source.name(),
                 sourceUrl.value(),
                 order.mediaCount)
@@ -64,15 +55,15 @@ public final class Order extends AggregateRoot {
         return order;
     }
 
-    public OrderId getOrderId() {
-        return orderId;
+    public OrderId getId() {
+        return id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public OrderSource getSource() {
+    public Source getSource() {
         return source;
     }
 

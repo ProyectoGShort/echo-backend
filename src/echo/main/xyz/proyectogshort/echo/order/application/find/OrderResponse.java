@@ -14,7 +14,7 @@ public record OrderResponse(
 
     public static OrderResponse fromAggregate(Order order) {
         return new OrderResponse(
-                order.getOrderId().value(),
+                order.getId().value(),
                 order.getTitle(),
                 order.getSource().name(),
                 order.getSourceUrl().value(),

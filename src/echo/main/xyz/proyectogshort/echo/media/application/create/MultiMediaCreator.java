@@ -4,7 +4,7 @@ import xyz.proyectogshort.echo.media.domain.Media;
 import xyz.proyectogshort.echo.media.domain.MediaId;
 import xyz.proyectogshort.echo.media.domain.MediaRepository;
 import xyz.proyectogshort.echo.shared.domain.OrderId;
-import xyz.proyectogshort.echo.shared.domain.OrderSource;
+import xyz.proyectogshort.echo.shared.domain.Source;
 import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
 import xyz.proyectogshort.shared.domain.AggregateRoot;
 import xyz.proyectogshort.shared.domain.Service;
@@ -28,11 +28,11 @@ public final class MultiMediaCreator {
         this.eventBus = eventBus;
     }
 
-    public void createMultiple(OrderId orderId, OrderSource orderSource, OrderSourceUrl orderSourceUrl, long orderMediaCount) {
+    public void createMultiple(OrderId orderId, Source source, OrderSourceUrl orderSourceUrl, long orderMediaCount) {
 
         List<Media> mediaList = LongStream
                 .rangeClosed(1, orderMediaCount)
-                .mapToObj((i) -> createMedia(i, orderId, orderSource, orderSourceUrl))
+                .mapToObj((i) -> createMedia(i, source, orderId, orderSourceUrl))
                 .toList();
 
         mediaList.forEach(mediaRepository::save);
@@ -46,8 +46,8 @@ public final class MultiMediaCreator {
         eventBus.publish(events);
     }
 
-    private Media createMedia(long mediaOrder, OrderId orderId, OrderSource orderSource, OrderSourceUrl orderSourceUrl) {
+    private Media createMedia(long position, Source source, OrderId orderId, OrderSourceUrl orderSourceUrl) {
         MediaId mediaId = new MediaId(uuidGenerator.generate());
-        return Media.create(mediaId, mediaOrder, orderId, orderSource, orderSourceUrl);
+        return Media.create(mediaId, position, source, orderId, orderSourceUrl);
     }
 }

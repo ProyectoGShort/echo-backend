@@ -1,66 +1,55 @@
 package xyz.proyectogshort.echo.media.domain;
 
 import xyz.proyectogshort.echo.shared.domain.OrderId;
-import xyz.proyectogshort.echo.shared.domain.OrderSource;
+import xyz.proyectogshort.echo.shared.domain.Source;
 import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
 import xyz.proyectogshort.shared.domain.AggregateRoot;
 
 public final class Media extends AggregateRoot {
 
     private final MediaId id;
-    private final long mediaOrder;
-
+    private final long position;
+    private final Source source;
+    private final OrderId orderId;
+    private final OrderSourceUrl orderSourceUrl;
+    private MediaStatus status;
     private String title;
     private String author;
     private MediaSourceUrl mediaSourceUrl;
 
-    private final OrderId orderId;
-    private final OrderSource orderSource;
-    private final OrderSourceUrl orderSourceUrl;
-
-    private MediaStatus mediaStatus;
-
     public Media(
             MediaId id,
-            long mediaOrder,
+            long position,
+            Source source,
+            OrderId orderId,
+            OrderSourceUrl orderSourceUrl,
+            MediaStatus status,
             String title,
             String author,
-            MediaSourceUrl mediaSourceUrl,
-            MediaStatus mediaStatus,
-            OrderId orderId,
-            OrderSource orderSource,
-            OrderSourceUrl orderSourceUrl
+            MediaSourceUrl mediaSourceUrl
     ) {
         this.id = id;
+        this.position = position;
+        this.source = source;
+        this.orderId = orderId;
+        this.orderSourceUrl = orderSourceUrl;
+        this.status = status;
         this.title = title;
         this.author = author;
         this.mediaSourceUrl = mediaSourceUrl;
-        this.mediaOrder = mediaOrder;
-        this.mediaStatus = mediaStatus;
-        this.orderId = orderId;
-        this.orderSource = orderSource;
-        this.orderSourceUrl = orderSourceUrl;
     }
 
-    private Media(){
-        id = null;
-        mediaOrder = 0;
-        orderId = null;
-        orderSource = null;
-        orderSourceUrl = null;
-    }
-
-    public static Media create(MediaId id, long mediaOrder, OrderId orderId, OrderSource source, OrderSourceUrl orderSourceUrl) {
+    public static Media create(MediaId id, long position, Source source, OrderId orderId, OrderSourceUrl orderSourceUrl) {
         Media media = new Media(
                 id,
-                mediaOrder,
-                null,
-                null,
-                null,
-                MediaStatus.INITIALIZED,
-                orderId,
+                position,
                 source,
-                orderSourceUrl
+                orderId,
+                orderSourceUrl,
+                MediaStatus.INITIALIZED,
+                null,
+                null,
+                null
         );
 
         media.record(new MediaCreatedEvent(media.id.value(), orderId.value()));
@@ -72,16 +61,24 @@ public final class Media extends AggregateRoot {
         return id;
     }
 
-    public long getMediaOrder() {
-        return mediaOrder;
+    public long getPosition() {
+        return position;
     }
 
-    public OrderSource getOrderSource() {
-        return orderSource;
+    public Source getSource() {
+        return source;
     }
 
-    public MediaStatus getMediaStatus() {
-        return mediaStatus;
+    public OrderId getOrderId() {
+        return orderId;
+    }
+
+    public OrderSourceUrl getOrderSourceUrl() {
+        return orderSourceUrl;
+    }
+
+    public MediaStatus getStatus() {
+        return status;
     }
 
     public String getTitle() {
@@ -96,34 +93,23 @@ public final class Media extends AggregateRoot {
         return mediaSourceUrl;
     }
 
-    public String getMediaSourceUrlValue() {
+    public String getMediaSourceUrlValueOrNull() {
         return mediaSourceUrl != null ? mediaSourceUrl.value() : null;
-    }
-
-    public OrderSourceUrl getOrderSourceUrl() {
-        return orderSourceUrl;
     }
 
     public void updateWithMediaInfo(MediaInfo mediaInfo) {
         title = mediaInfo.title();
         author = mediaInfo.author();
         mediaSourceUrl = mediaInfo.mediaSourceUrl();
+
+        record(new MediaDownloadStartedEvent(id.value(), orderId.value()));
     }
 
-
-    public boolean matchesSource(OrderSource orderSource) {
-        if (this.orderSource == null || orderSource == null) {
+    public boolean matchesSource(Source orderSource) {
+        if (this.source == null || orderSource == null) {
             return false;
         }
 
-        return this.orderSource.equals(orderSource);
-    }
-
-    @Override
-    public String toString() {
-        return "Media{" +
-                "id=" + id +
-                ", mediaOrder=" + mediaOrder +
-                '}';
+        return this.source.equals(orderSource);
     }
 }

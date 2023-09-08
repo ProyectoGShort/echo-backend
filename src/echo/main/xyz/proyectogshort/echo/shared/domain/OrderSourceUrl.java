@@ -17,10 +17,6 @@ public final class OrderSourceUrl extends StringValueObject {
         return value;
     }
 
-    private OrderSourceUrl() {
-        super("");
-    }
-
     public boolean matches(String pattern) {
         return value().matches(pattern);
     }

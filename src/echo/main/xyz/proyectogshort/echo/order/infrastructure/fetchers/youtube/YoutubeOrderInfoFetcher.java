@@ -2,7 +2,7 @@ package xyz.proyectogshort.echo.order.infrastructure.fetchers.youtube;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import xyz.proyectogshort.echo.order.domain.*;
-import xyz.proyectogshort.echo.shared.domain.OrderSource;
+import xyz.proyectogshort.echo.shared.domain.Source;
 import xyz.proyectogshort.echo.shared.domain.OrderSourceUrl;
 import xyz.proyectogshort.shared.domain.Service;
 
@@ -60,7 +60,7 @@ public final class YoutubeOrderInfoFetcher implements OrderInfoFetcher {
     private static OrderInfo getVideoOrder(YoutubeOrderInfo youtubeInfo) {
         return new OrderInfo(
                 youtubeInfo.getTitle(),
-                OrderSource.YOUTUBE,
+                Source.YOUTUBE,
                 1,
                 youtubeInfo.getUploader()
         );
@@ -69,7 +69,7 @@ public final class YoutubeOrderInfoFetcher implements OrderInfoFetcher {
     private static OrderInfo getPlaylistOrder(YoutubeOrderInfo youtubeInfo) {
         return new OrderInfo(
                 youtubeInfo.getPlaylistTitle(),
-                OrderSource.YOUTUBE,
+                Source.YOUTUBE,
                 youtubeInfo.getPlaylistCount(),
                 youtubeInfo.getPlaylistAuthor()
         );

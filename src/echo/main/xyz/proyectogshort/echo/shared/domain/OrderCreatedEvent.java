@@ -73,7 +73,7 @@ public final class OrderCreatedEvent extends DomainEvent {
                 aggregateId,
                 eventId,
                 occurredOn,
-                (String) body.get("orderSource"),
+                (String) body.get("source"),
                 (String) body.get("orderSourceUrl"),
                 (long) body.get("orderMediaCount")
         );

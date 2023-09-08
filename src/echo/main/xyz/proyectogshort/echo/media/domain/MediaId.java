@@ -6,6 +6,4 @@ public final class MediaId extends Identifier {
     public MediaId(String value) {
         super(value);
     }
-
-    private MediaId() {}
 }

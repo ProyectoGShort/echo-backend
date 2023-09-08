@@ -4,22 +4,22 @@ import xyz.proyectogshort.echo.media.domain.Media;
 
 public record MediaResponse(
         String id,
+        long position,
+        String source,
+        String status,
         String title,
         String author,
-        long mediaOrder,
-        String mediaStatus,
-        String mediaSourceUrl,
-        String orderSource
+        String mediaSourceUrl
 ) {
     public static MediaResponse fromAggregate(Media media) {
         return new MediaResponse(
                 media.getId().value(),
+                media.getPosition(),
+                media.getSource().name(),
+                media.getStatus().name(),
                 media.getTitle(),
                 media.getAuthor(),
-                media.getMediaOrder(),
-                media.getMediaStatus().name(),
-                media.getMediaSourceUrlValue(),
-                media.getOrderSource().name()
+                media.getMediaSourceUrlValueOrNull()
         );
     }
 }

@@ -1,5 +1,5 @@
 package xyz.proyectogshort.echo.shared.domain;
 
-public enum OrderSource {
+public enum Source {
     YOUTUBE
 }
