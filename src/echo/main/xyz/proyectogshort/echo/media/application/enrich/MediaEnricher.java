@@ -7,19 +7,19 @@ import xyz.proyectogshort.shared.domain.bus.event.EventBus;
 @Service
 public final class MediaEnricher {
     private final MediaInfoFetcherGateway mediaInfoFetcherGateway;
+    private final MediaFinder mediaFinder;
     private final MediaRepository mediaRepository;
     private final EventBus eventBus;
 
-    public MediaEnricher(MediaInfoFetcherGateway mediaInfoFetcherGateway, MediaRepository mediaRepository, EventBus eventBus) {
+    public MediaEnricher(MediaInfoFetcherGateway mediaInfoFetcherGateway, MediaFinder mediaFinder, MediaRepository mediaRepository, EventBus eventBus) {
         this.mediaInfoFetcherGateway = mediaInfoFetcherGateway;
+        this.mediaFinder = mediaFinder;
         this.mediaRepository = mediaRepository;
         this.eventBus = eventBus;
     }
 
     public void enrich(MediaId mediaId) {
-        Media media = mediaRepository
-                .findById(mediaId)
-                .orElseThrow(() -> new MediaNotFoundException(mediaId));
+        Media media = mediaFinder.findOrThrow(mediaId);
 
         MediaInfo mediaInfo = mediaInfoFetcherGateway.fetch(media);
 
