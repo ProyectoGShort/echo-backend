@@ -112,4 +112,9 @@ public final class Media extends AggregateRoot {
 
         return this.source.equals(orderSource);
     }
+
+    public void markAsDownloaded() {
+        status = MediaStatus.DOWNLOADED;
+        record(new MediaDownloadedEvent(id.value()));
+    }
 }

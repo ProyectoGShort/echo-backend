@@ -18,5 +18,4 @@ public class DownloadMediaOnDownloadStarted {
     public void on(MediaDownloadStartedEvent event) {
         this.mediaDownloader.download(new MediaId(event.aggregateId()));
     }
-
 }
