@@ -1,7 +1,11 @@
 package xyz.proyectogshort.echo.media.infrastructure.downloaders.store;
 
-import java.io.InputStream;
+import xyz.proyectogshort.echo.media.domain.Media;
+
+import java.io.BufferedOutputStream;
 
 public interface MediaStreamStore {
-    void store(InputStream mediaStream);
+    MediaStream getOutputStream(Media media) throws Exception;
+
+    record MediaStream(BufferedOutputStream outputStream, String contentPath) {}
 }
