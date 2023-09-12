@@ -25,9 +25,9 @@ public final class MediaDownloader {
 
     public void download(MediaId mediaId) {
         var media = mediaFinder.findOrThrow(mediaId);
-        var path = mediaDownloaderGateway.download(media);
+        var contentPath = mediaDownloaderGateway.download(media);
 
-        media.markAsDownloaded();
+        media.markAsDownloaded(contentPath);
         mediaRepository.save(media);
         eventBus.publish(media.pullDomainEvents());
     }

@@ -6,20 +6,22 @@ public record MediaResponse(
         String id,
         long position,
         String source,
+        String sourceUrl,
         String status,
         String title,
         String author,
-        String mediaSourceUrl
+        String url
 ) {
-    public static MediaResponse fromAggregate(Media media) {
+    public static MediaResponse fromAggregate(Media media, String url) {
         return new MediaResponse(
                 media.getId().value(),
                 media.getPosition(),
                 media.getSource().name(),
+                media.getMediaSourceUrlValueOrNull(),
                 media.getStatus().name(),
                 media.getTitle(),
                 media.getAuthor(),
-                media.getMediaSourceUrlValueOrNull()
+                url
         );
     }
 }

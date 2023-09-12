@@ -49,7 +49,7 @@ public final class YoutubeMediaDownloader implements MediaDownloader {
         return String.format(
                 "/tmp/echo/downloaders/%s/%s/%s.mp3",
                 getClass().getSimpleName().toLowerCase(),
-                media.getOrderId().value(),
+                media.getId().value(),
                 media.getTitle()
         );
     }

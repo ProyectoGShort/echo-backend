@@ -16,6 +16,7 @@ public final class Media extends AggregateRoot {
     private String title;
     private String author;
     private MediaSourceUrl mediaSourceUrl;
+    private String contentPath;
 
     public Media(
             MediaId id,
@@ -26,7 +27,8 @@ public final class Media extends AggregateRoot {
             MediaStatus status,
             String title,
             String author,
-            MediaSourceUrl mediaSourceUrl
+            MediaSourceUrl mediaSourceUrl,
+            String contentPath
     ) {
         this.id = id;
         this.position = position;
@@ -37,6 +39,7 @@ public final class Media extends AggregateRoot {
         this.title = title;
         this.author = author;
         this.mediaSourceUrl = mediaSourceUrl;
+        this.contentPath = contentPath;
     }
 
     public static Media create(MediaId id, long position, Source source, OrderId orderId, OrderSourceUrl orderSourceUrl) {
@@ -47,6 +50,7 @@ public final class Media extends AggregateRoot {
                 orderId,
                 orderSourceUrl,
                 MediaStatus.INITIALIZED,
+                null,
                 null,
                 null,
                 null
@@ -97,6 +101,10 @@ public final class Media extends AggregateRoot {
         return mediaSourceUrl != null ? mediaSourceUrl.value() : null;
     }
 
+    public String getContentPath() {
+        return contentPath;
+    }
+
     public void updateWithMediaInfo(MediaInfo mediaInfo) {
         title = mediaInfo.title();
         author = mediaInfo.author();
@@ -113,8 +121,9 @@ public final class Media extends AggregateRoot {
         return this.source.equals(orderSource);
     }
 
-    public void markAsDownloaded() {
+    public void markAsDownloaded(String contentPath) {
         status = MediaStatus.DOWNLOADED;
+        this.contentPath = contentPath;
         record(new MediaDownloadedEvent(id.value()));
     }
 }

@@ -19,6 +19,7 @@ CREATE TABLE medias (
     title VARCHAR(255) NULL,
     author VARCHAR(255) NULL,
     media_source_url TEXT NULL,
+    content_path TEXT NULL,
 
     UNIQUE (position, order_id)
 );

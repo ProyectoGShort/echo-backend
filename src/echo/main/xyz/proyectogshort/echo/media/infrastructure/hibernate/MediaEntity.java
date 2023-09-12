@@ -36,6 +36,8 @@ public final class MediaEntity {
     private String author;
     @Column(name = "media_source_url")
     private String mediaSourceUrl;
+    @Column(name = "content_path")
+    private String contentPath;
 
     public MediaEntity(Media media) {
         this.id = media.getId().value();
@@ -47,6 +49,7 @@ public final class MediaEntity {
         this.title = media.getTitle();
         this.author = media.getAuthor();
         this.mediaSourceUrl = media.getMediaSourceUrl() != null ? media.getMediaSourceUrl().value() : null;
+        this.contentPath = media.getContentPath();
     }
 
     public Media toMedia() {
@@ -59,7 +62,8 @@ public final class MediaEntity {
                 MediaStatus.valueOf(status),
                 title,
                 author,
-                mediaSourceUrl != null ? new MediaSourceUrl(mediaSourceUrl) : null
+                mediaSourceUrl != null ? new MediaSourceUrl(mediaSourceUrl) : null,
+                contentPath
         );
     }
 }

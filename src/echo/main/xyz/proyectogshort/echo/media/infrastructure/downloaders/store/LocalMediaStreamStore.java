@@ -7,13 +7,12 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.UUID;
 
 @Service
 public class LocalMediaStreamStore implements MediaStreamStore {
     @Override
     public MediaStream getOutputStream(Media media) throws IOException {
-        String contentPath = String.format("/media_store/%s/%s.mp3", UUID.randomUUID(), media.getTitle());
+        String contentPath = String.format("/media_store/%s/%s.mp3", media.getId().value(), media.getTitle());
         String path = "/tmp/echo" + contentPath;
 
         File file = new File(path);
