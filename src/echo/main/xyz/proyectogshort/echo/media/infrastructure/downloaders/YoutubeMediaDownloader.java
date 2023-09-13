@@ -3,7 +3,7 @@ package xyz.proyectogshort.echo.media.infrastructure.downloaders;
 import xyz.proyectogshort.echo.media.domain.Media;
 import xyz.proyectogshort.echo.media.domain.MediaDownloadException;
 import xyz.proyectogshort.echo.media.domain.MediaDownloader;
-import xyz.proyectogshort.echo.media.infrastructure.downloaders.store.MediaStreamStore;
+import xyz.proyectogshort.echo.media.infrastructure.downloaders.store.FileStore;
 import xyz.proyectogshort.echo.shared.domain.Source;
 import xyz.proyectogshort.shared.domain.Service;
 
@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 public final class YoutubeMediaDownloader implements MediaDownloader {
 
-    private final MediaStreamStore mediaStreamStore;
+    private final FileStore fileStore;
 
-    public YoutubeMediaDownloader(MediaStreamStore mediaStreamStore) {
-        this.mediaStreamStore = mediaStreamStore;
+    public YoutubeMediaDownloader(FileStore fileStore) {
+        this.fileStore = fileStore;
     }
 
     @Override
@@ -27,22 +27,33 @@ public final class YoutubeMediaDownloader implements MediaDownloader {
     @Override
     public String download(Media media) throws MediaDownloadException {
         String temporalPath = getTemporalPath(media);
-        MediaStreamStore.MediaStream mediaStream;
+        Process process;
 
         try {
-            Process process = createProcess(media, temporalPath);
-            ensureProcessIsCompletedWithoutErrors(process);
-
-            mediaStream = mediaStreamStore.getOutputStream(media);
-            storeTemporalFile(temporalPath, mediaStream);
-
-        } catch (Exception e) {
-            new File(temporalPath).delete();
+            process = createProcess(media, temporalPath);
+        } catch (IOException e) {
             throw new MediaDownloadException(e);
         }
 
-        new File(temporalPath).delete();
-        return mediaStream.contentPath();
+        try(var errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+            File file = new File(temporalPath);
+
+            if (process.waitFor() != 0) {
+                file.delete();
+
+                String error = String.join(System.lineSeparator(), errorStream.lines().toList());
+                throw new MediaDownloadException(error);
+            }
+
+            String finalPath = fileStore.store(media, file);
+            file.delete();
+            return finalPath;
+
+        } catch (MediaDownloadException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new MediaDownloadException(e);
+        }
     }
 
     private String getTemporalPath(Media media) {
@@ -70,26 +81,5 @@ public final class YoutubeMediaDownloader implements MediaDownloader {
         );
 
         return new ProcessBuilder(command).start();
-    }
-
-    private static void ensureProcessIsCompletedWithoutErrors(Process process) throws Exception {
-        try(var errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-
-            if (process.waitFor() != 0) {
-                String error = String.join(System.lineSeparator(), errorStream.lines().toList());
-                throw new Exception(error);
-            }
-        }
-    }
-
-    private static void storeTemporalFile(
-            String temporalPath, MediaStreamStore.MediaStream mediaStream) throws IOException {
-
-        try(
-                var inputStream = new BufferedInputStream(new FileInputStream(temporalPath));
-                var outputStream = mediaStream.outputStream()
-        ) {
-            inputStream.transferTo(outputStream);
-        }
     }
 }
