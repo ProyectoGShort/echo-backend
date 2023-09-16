@@ -24,7 +24,7 @@ public class S3FileStore implements FileStore {
 
     @Override
     public String store(Media media, File file) {
-        String contentPath = String.format("media_store/%s/%s", media.getId().value(), media.getTitle());
+        String contentPath = String.format("media_store/%s/%s.mp3", media.getId().value(), media.getTitle());
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(s3Config.getBucketName())
                 .key(contentPath)
