@@ -1,0 +1,51 @@
+name: Build & Deploy
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  packages: write
+
+jobs:
+  build:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine version
+        run: | 
+          AUTH=$(echo "${{secrets.GITHUB_TOKEN}}" | base64)
+          LAST_VERSION=$(curl -s -H "Authorization: Bearer $AUTH" 'https://ghcr.io/v2/ProyectoGShort/echo-core/tags/list' | jq -r '.tags[]' | sort -n | tail -n 1)
+          NEW_VERSION=$((LAST_VERSION + 1))
+
+          echo "version: $LAST_VERSION -> $NEW_VERSION"
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_ENV"
+          echo "LAST_VERSION=$LAST_VERSION" >> "$GITHUB_ENV"
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          docker build -t ghcr.io/proyectogshort/echo-core:latest .
+          docker build -t "ghcr.io/proyectogshort/echo-core:${{env.NEW_VERSION}}" .
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Push to GHCR
+        run: |-
+          docker push ghcr.io/proyectogshort/echo-core:latest
+          docker push "ghcr.io/proyectogshort/echo-core:${{env.NEW_VERSION}}"
+
+      - name: Delete old image
+        uses: bots-house/ghcr-delete-image-action@v1.1.0
+        with:
+          owner: proyectogshort
+          name: echo-core
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.LAST_VERSION }}
