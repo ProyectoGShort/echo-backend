@@ -1,4 +1,4 @@
-name: Deploy & Deploy
+name: Deploy
 on:
   push:
     branches:
@@ -6,7 +6,6 @@ on:
 
 permissions:
   packages: write
-  contents: write
 
 concurrency:
   group: deploy
@@ -15,33 +14,17 @@ concurrency:
 jobs:
 
   build:
-    name: Build
+    name: Deploy
     runs-on: ubuntu-latest
-    outputs:
-      NEW_VERSION: ${{ steps.version.outputs.NEW_VERSION }}
     steps:
 
-      - name: Determine version
-        id: version
-        run: | 
-          AUTH=$(echo "${{secrets.GITHUB_TOKEN}}" | base64)
-          LAST_VERSION=$(curl -s -H "Authorization: Bearer $AUTH" 'https://ghcr.io/v2/ProyectoGShort/echo-core/tags/list' | jq -r '.tags[]' | sort -n | tail -n 1)
-          NEW_VERSION=$((LAST_VERSION + 1))
-
-          echo "version: $LAST_VERSION -> $NEW_VERSION"
-          echo "LAST_VERSION=$LAST_VERSION" >> "$GITHUB_ENV"
-          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_ENV"
-          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT"
-
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Build
-        run: |
-          docker build -t ghcr.io/proyectogshort/echo-core:latest .
-          docker build -t "ghcr.io/proyectogshort/echo-core:${{env.NEW_VERSION}}" .
+        run: docker build -t ghcr.io/proyectogshort/echo-core:latest .
 
-      - name: Login to GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -49,31 +32,20 @@ jobs:
           password: ${{secrets.GITHUB_TOKEN}}
 
       - name: Push to GHCR
-        run: |-
-          docker push ghcr.io/proyectogshort/echo-core:latest
-          docker push "ghcr.io/proyectogshort/echo-core:${{env.NEW_VERSION}}"
+        run: docker push ghcr.io/proyectogshort/echo-core:latest
 
-      - name: Delete old image
+      - name: Delete old images
         uses: bots-house/ghcr-delete-image-action@v1.1.0
         with:
           owner: proyectogshort
           name: echo-core
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ env.LAST_VERSION }}
+          untagged-keep-latest: 1
 
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs:
-      - build
-    steps:
-
-      - name: Checkout source code
-        uses: actions/checkout@v2
+      - name: Kubernetes Set Context
+        uses: Azure/k8s-set-context@v4.0.1
         with:
-          repository: ProyectoGShort/kubernetes-config
-          ref: main
-          token: ${{ secrets.KUBECONFIG_TOKEN }}
+         kubeconfig: ${{ secrets.KUBECONFIG }}
 
-      - name: Update ${{ github.repository }} version
-        run: echo Version to deploy ${{ github.repository }}:${{ needs.build.outputs.NEW_VERSION }}
+      - name: Deploy to K8S
+        run: kubectl rollout restart deploy/echo-backend
