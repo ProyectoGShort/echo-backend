@@ -1,4 +1,4 @@
-name: Build & Deploy
+name: Deploy & Deploy
 on:
   push:
     branches:
@@ -6,21 +6,32 @@ on:
 
 permissions:
   packages: write
+  contents: write
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
 
 jobs:
+
   build:
-    name: Build & Deploy
+    name: Build
     runs-on: ubuntu-latest
+    outputs:
+      NEW_VERSION: ${{ steps.version.outputs.NEW_VERSION }}
     steps:
+
       - name: Determine version
+        id: version
         run: | 
           AUTH=$(echo "${{secrets.GITHUB_TOKEN}}" | base64)
           LAST_VERSION=$(curl -s -H "Authorization: Bearer $AUTH" 'https://ghcr.io/v2/ProyectoGShort/echo-core/tags/list' | jq -r '.tags[]' | sort -n | tail -n 1)
           NEW_VERSION=$((LAST_VERSION + 1))
 
           echo "version: $LAST_VERSION -> $NEW_VERSION"
-          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_ENV"
           echo "LAST_VERSION=$LAST_VERSION" >> "$GITHUB_ENV"
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_ENV"
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -49,3 +60,20 @@ jobs:
           name: echo-core
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.LAST_VERSION }}
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          repository: ProyectoGShort/kubernetes-config
+          ref: main
+          token: ${{ secrets.KUBECONFIG_TOKEN }}
+
+      - name: Update ${{ github.repository }} version
+        run: echo Version to deploy ${{ github.repository }}:${{ needs.build.outputs.NEW_VERSION }}
